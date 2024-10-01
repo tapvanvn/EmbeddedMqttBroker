@@ -5,13 +5,13 @@ AckConnectMqttMessage::AckConnectMqttMessage(uint8_t ackFlags, uint8_t connectRe
     this->connectReturnCode = connectReturnCode;
 }
 
-String AckConnectMqttMessage::buildMqttPacket(){
-    String ackPacket;
+std::string AckConnectMqttMessage::buildMqttPacket(){
+    std::string ackPacket;
     
-    ackPacket.concat((char)getTypeAndFlags());
-    ackPacket.concat((char)2);
-    ackPacket.concat((char)ackFlags);
-    ackPacket.concat((char)connectReturnCode);
+    ackPacket.append(1,(char)getTypeAndFlags());
+    ackPacket.append(1,(char)2);
+    ackPacket.append(1,(char)ackFlags);
+    ackPacket.append(1,(char)connectReturnCode);
     
     return ackPacket;
 }

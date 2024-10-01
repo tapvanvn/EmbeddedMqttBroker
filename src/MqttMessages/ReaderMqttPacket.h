@@ -62,7 +62,7 @@ class ReaderMqttPacket {
          * @return int the index where finally the actual field and start the next
          *         mqtt field. 
          */
-        int bytesToString(int index, size_t textFieldLengt,String*textField);
+        int bytesToString(int index, size_t textFieldLengt, std::string*textField);
 
 
 
@@ -123,7 +123,7 @@ class ReaderMqttPacket {
          * @return int, index where the current field ends and start the next
          *         mqtt field. 
          */
-        int decodeTextField(int index, String* textField);
+        int decodeTextField(int index, std::string* textField);
 
         /**
          * @brief Get topic from mqtt packet.

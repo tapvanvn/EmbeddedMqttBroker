@@ -4,17 +4,17 @@ PublishMqttMessage::PublishMqttMessage(uint8_t publishFlags):MqttMessage(PUBLISH
 
 }
 
-String PublishMqttMessage::buildMqttPacket(){
+std::string PublishMqttMessage::buildMqttPacket(){
     
     /**
      * there is not message Id field in qos = 0, add this field in next versions.
      * 
      */
-    String mqttPacket;
+    std::string mqttPacket;
 
     //concat fixed header
     //mqttPacket.concat((char)getTypeAndFlags()); // for versions with qos > 0 support
-    mqttPacket.concat((char)48); // this line must be 
+    mqttPacket.append(1, (char)48); // this line must be 
     // replaced for the above line, for versions with qos > 0
 
     // process to concat remainingLength
@@ -30,11 +30,11 @@ String PublishMqttMessage::buildMqttPacket(){
     // concat topic lengt field, the field have two bytes allways
     uint8_t MSB = topic.getTopicLength() >> 8;
     uint8_t LSB = topic.getTopicLength();
-    mqttPacket.concat((char)MSB);
-    mqttPacket.concat((char)LSB);
+    mqttPacket.append(1, (char)MSB);
+    mqttPacket.append(1, (char)LSB);
 
     // concat topic and payload.
-    mqttPacket.concat(topic.getTopicAndPayLoad());
+    mqttPacket.append(topic.getTopicAndPayLoad());
 
     return mqttPacket;
 }
@@ -55,7 +55,7 @@ PublishMqttMessage::PublishMqttMessage(ReaderMqttPacket packetReaded):MqttMessag
 
 
 
-String PublishMqttMessage::concatEncodedSize(uint32_t encodedSize, String mqttPacket){
+std::string PublishMqttMessage::concatEncodedSize(uint32_t encodedSize, std::string mqttPacket){
    
     /**
      * remaining lengt field has between 1 to 4 bytes,
@@ -96,14 +96,14 @@ String PublishMqttMessage::concatEncodedSize(uint32_t encodedSize, String mqttPa
         // is 1xxxxxxxx & 100000000 = 10000000
         if((byteToConcat & 0x80) == 0x80 ){
             // concat remaining lengt bytes
-            mqttPacket.concat((char)byteToConcat);
+            mqttPacket.append(1, (char)byteToConcat);
         }
         shift = shift - 8;
     }
 
     // concat last byte, is always present.
     byteToConcat = encodedSize;
-    mqttPacket.concat((char)byteToConcat);
+    mqttPacket.append(1, (char)byteToConcat);
 
     return mqttPacket;
 

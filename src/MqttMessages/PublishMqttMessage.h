@@ -29,7 +29,7 @@ private:
      * @param mqttPacket String where concat the encodedSize.
      * @return String with encodedSize concatenated.
      */
-    String concatEncodedSize(uint32_t encodedSize, String mqttPacket);
+    std::string concatEncodedSize(uint32_t encodedSize, std::string mqttPacket);
 
 public:
 
@@ -67,13 +67,13 @@ public:
         return this->topic.isTopic(topic);
     }
 
-    String buildMqttPacket();
+    std::string buildMqttPacket();
 
-    void setTopic(String topic){
+    void setTopic(std::string topic){
         this->topic.setTopic(topic);
     }
 
-    void setPayLoad(String payLoad){
+    void setPayLoad(std::string payLoad){
         this->topic.setPayLoad(payLoad);
     }
 

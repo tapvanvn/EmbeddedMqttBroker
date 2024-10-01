@@ -17,7 +17,7 @@ void Trie::clear()
     root = new NodeTrie();
 }
 
-NodeTrie* Trie::insert(String topic)
+NodeTrie* Trie::insert(std::string topic)
 {
     NodeTrie *tmp = root;
     unsigned int i = 0;
@@ -45,7 +45,7 @@ NodeTrie* Trie::insert(String topic)
     return tmp;
 }
 
-bool Trie::find(String topic)
+bool Trie::find(std::string topic)
 {
     NodeTrie *tmp = root;
     unsigned int i = 0;   
@@ -65,13 +65,13 @@ bool Trie::find(String topic)
     return ( (i == topic.length() - 1) && (tmp->find('$')) ); 
 }
 
-NodeTrie* Trie::subscribeToTopic(String topic, MqttClient* client){
+NodeTrie* Trie::subscribeToTopic(std::string topic, MqttClient* client){
     NodeTrie* aux = insert(topic);
     aux->addSubscribedMqttClient(client);
     return aux;
 }
 
-std::vector<int>* Trie::getSubscribedMqttClients(String topic){
+std::vector<int>* Trie::getSubscribedMqttClients(std::string topic){
     
     std::vector<int>* clientsIds = new std::vector<int>();    
     NodeTrie *tmp = root;

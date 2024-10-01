@@ -60,14 +60,15 @@ void NewClientListenerTask::stopListen(){
 
 void NewClientListenerTask::sendAckConnection(WiFiClient tcpClient){
 
-  String ackPacket = messagesFactory.getAceptedAckConnectMessage().buildMqttPacket();
+  std::string ackPacket = messagesFactory.getAceptedAckConnectMessage().buildMqttPacket();
   sendPacketByTcpConnection(tcpClient, ackPacket);
 }
 
-void NewClientListenerTask::sendPacketByTcpConnection(WiFiClient client, String mqttPacket){
+void NewClientListenerTask::sendPacketByTcpConnection(WiFiClient client, std::string mqttPacket){
   
-  uint8_t buff[mqttPacket.length()]; 
-  mqttPacket.getBytes(buff,mqttPacket.length());
-  client.write(buff,mqttPacket.length());
+  //uint8_t buff[mqttPacket.length()]; 
+  //mqttPacket.getBytes(buff,mqttPacket.length());
+  
+  client.write(mqttPacket.data(),mqttPacket.length());
 
 }

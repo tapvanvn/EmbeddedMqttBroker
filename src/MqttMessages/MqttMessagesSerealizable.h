@@ -18,7 +18,7 @@ class MqttMessageSerealizable{
          * 
          * @return uint8_t* 
          */
-        virtual String buildMqttPacket() = 0;     
+        virtual std::string buildMqttPacket() = 0;     
 
 
 };

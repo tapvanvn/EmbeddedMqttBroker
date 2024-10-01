@@ -88,7 +88,7 @@ void NodeTrie::addSubscribedMqttClient(MqttClient* client){
 }
 
 
-void NodeTrie::findSubscribedMqttClients(std::vector<int>*clientsIds, String topic, int index){
+void NodeTrie::findSubscribedMqttClients(std::vector<int>*clientsIds, std::string topic, int index){
    
     NodeTrie *tmp = this;
     unsigned int i = index;
@@ -129,7 +129,7 @@ void NodeTrie::findSubscribedMqttClients(std::vector<int>*clientsIds, String top
 }
 
 
-void NodeTrie::matchWithPlusWildCard(std::vector<int>* clients,String topic, int index){
+void NodeTrie::matchWithPlusWildCard(std::vector<int>* clients,std::string topic, int index){
 
     NodeTrie *plusWildCard = this->find('+');
     if(plusWildCard == NULL){
@@ -137,10 +137,10 @@ void NodeTrie::matchWithPlusWildCard(std::vector<int>* clients,String topic, int
     }
 
 // ***** explorer ("/prefix/"->"+"->"/"->"some suffix$"), branch. ****************
-    int indexAux = index;
+    size_t indexAux = index;
     indexAux++;
-    indexAux = topic.indexOf('/',indexAux);
-    if(indexAux != -1){
+    indexAux = topic.find('/',indexAux);
+    if(indexAux != std::string::npos){
         plusWildCard->findSubscribedMqttClients(clients,topic,indexAux);
     }
     
@@ -152,14 +152,14 @@ void NodeTrie::matchWithPlusWildCard(std::vector<int>* clients,String topic, int
 
     indexAux = index;
     indexAux++;
-    if( (topic.indexOf('/',indexAux) == -1) ){
+    if( (topic.find('/',indexAux) == std::string::npos) ){
 
         indexAux = topic.length() - 1;
         plusWildCard->findSubscribedMqttClients(clients,topic,indexAux);
     }
 }
 
-void NodeTrie::matchWithNumberSignWildCard(std::vector<int>* clients,String topic){
+void NodeTrie::matchWithNumberSignWildCard(std::vector<int>* clients, std::string topic){
 
     NodeTrie * numberSingWildCard = this->find('#');
     if(numberSingWildCard == NULL){

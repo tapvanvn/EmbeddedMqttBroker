@@ -3,6 +3,16 @@
 
 #include <WiFi.h> 
 #include <map>
+#include <string>
+#ifdef ARDUINO
+    #include <Arduino.h>
+    #define log_i print_log 
+    #define log_v print_log
+    #define log_w print_log
+    #define log_e print_log
+    #define log_d print_log
+    void print_log(const char *format,...);
+#endif
 #include "WrapperFreeRTOS.h"
 #include "MqttMessages/FactoryMqttMessages.h"
 #include "MqttMessages/SubscribeMqttMessage.h"
@@ -148,7 +158,7 @@ private:
 
     /********************** Tcp communication ***************************/
     void sendAckConnection(WiFiClient tcpClient);
-    void sendPacketByTcpConnection(WiFiClient client, String mqttPacket);
+    void sendPacketByTcpConnection(WiFiClient client, std::string mqttPacket);
 
 public:
 
@@ -272,7 +282,7 @@ private:
      * 
      * @param mqttPacket to send over tcpConnection.
      */
-    void sendPacketByTcpConnection(String mqttPacket);
+    void sendPacketByTcpConnection(std::string mqttPacket);
     
 public:
 
@@ -313,7 +323,7 @@ public:
      * 
      */
     void notifyDeleteClient(){
-        log_v("Notify broker to delete client: %i", clientId);
+        Serial.printf("Notify broker to delete client: %i\n", clientId);
         xQueueSend((*deleteMqttClientQueue), &clientId, portMAX_DELAY);
     }
 
@@ -579,7 +589,7 @@ private:
      * @param topic where is looking for in the tree.
      * @param index where start the topic level.
      */
-    void matchWithPlusWildCard(std::vector<int>* clientsIds,String topic, int index);
+    void matchWithPlusWildCard(std::vector<int>* clientsIds,std::string topic, int index);
     
     /**
      * @brief When some client subscribe to a topic usin "#" wildcard, the tree
@@ -588,7 +598,7 @@ private:
      * @param clientsIds vector where store the id of mqttClients.
      * @param topic where is looking for in the tree.
      */
-    void matchWithNumberSignWildCard(std::vector<int>* clientsIds,String topic);
+    void matchWithNumberSignWildCard(std::vector<int>* clientsIds,std::string topic);
 
 public:
     NodeTrie();
@@ -646,7 +656,7 @@ public:
      * @param topic that clients are subscribed.
      * @param index where start the proccesing of topic.
      */
-    void findSubscribedMqttClients(std::vector<int>*clientsIds, String topic, int index);
+    void findSubscribedMqttClients(std::vector<int>*clientsIds, std::string topic, int index);
 
     void unSubscribeMqttClient(MqttClient * mqttClient){
         subscribedClients->erase(mqttClient->getId());
@@ -682,7 +692,7 @@ public:
      * @return NodeTrie* where is the end mark of the prefix '$',
      *         this node has the subscribed clients map.
      */
-    NodeTrie* insert(String topic);
+    NodeTrie* insert(std::string topic);
 
     /**
      * @brief find a topic in the tree. 
@@ -691,7 +701,7 @@ public:
      * @return true if topic is in the tree. 
      * @return false in other case.
      */
-    bool find(String topic);
+    bool find(std::string topic);
 
     /**
      * @brief Get num topcis in the tree.
@@ -708,7 +718,7 @@ public:
      * @param client that subscribe.
      * @param NodeTrie* where the client is subscribed.
      */
-    NodeTrie* subscribeToTopic(String topic, MqttClient* client);
+    NodeTrie* subscribeToTopic(std::string topic, MqttClient* client);
 
     /**
      * @brief Get the vector of the id of subscribed mqtt clients, Warning!, this 
@@ -718,7 +728,7 @@ public:
      * @param topic that mqttClients are subscribed.
      * @return std::vector<int>* vector where are all id of the mqttClients subscribed to this topic.
      */
-    std::vector<int>* getSubscribedMqttClients(String topic);
+    std::vector<int>* getSubscribedMqttClients(std::string topic);
 
 };
 

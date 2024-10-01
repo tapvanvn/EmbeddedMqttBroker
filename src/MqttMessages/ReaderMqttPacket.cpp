@@ -39,7 +39,7 @@ size_t ReaderMqttPacket::readRemainLengtSize(WiFiClient client){
 
 /********************** public utils *******************************/
 
-int ReaderMqttPacket::decodeTextField(int index, String* textField){
+int ReaderMqttPacket::decodeTextField(int index, std::string* textField){
     
     uint8_t msByte = remainingPacket[index];
     index++; // advance to lsByte
@@ -51,7 +51,7 @@ int ReaderMqttPacket::decodeTextField(int index, String* textField){
 
 
 int ReaderMqttPacket::decodeTopic(int index, MqttTocpic *topic){
-    String topicAux;
+    std::string topicAux;
     index = decodeTextField(index,&topicAux);
     topic->setTopic(topicAux); 
     return index;
@@ -59,7 +59,7 @@ int ReaderMqttPacket::decodeTopic(int index, MqttTocpic *topic){
 
 int ReaderMqttPacket::decodePayLoad(int index, MqttTocpic *topic){
     size_t length = remainingLengt - index;
-    String payLoad;
+    std::string payLoad;
     if(length > 0){
         index = bytesToString(index,length,&payLoad);
         topic->setPayLoad(payLoad);
@@ -101,18 +101,18 @@ uint16_t ReaderMqttPacket::concatenateTwoBytes(uint8_t msByte, uint8_t lsByte){
 }
 
 
-int ReaderMqttPacket::bytesToString(int index, size_t textFieldLengt,String*textField){
+int ReaderMqttPacket::bytesToString(int index, size_t textFieldLengt, std::string*textField){
     // reserving memory to copy the mqtt text field.
     char* aux = (char*)malloc(textFieldLengt+1);
     
     // memcpy is necesary because reader object will be deleted.
     memcpy(aux,&remainingPacket[index],textFieldLengt);
     aux[textFieldLengt] = '\0';
-    //textField = new String(aux); --> memory is in the context of
+    //textField = new std::string(aux); --> memory is in the context of
     // this method, the allocated memory is in the stack of this method
     // and it is losed when the method ends..
     
-    textField->concat(aux);
+    textField->append(aux, textFieldLengt);
     free(aux);
     return index+textFieldLengt;
 }

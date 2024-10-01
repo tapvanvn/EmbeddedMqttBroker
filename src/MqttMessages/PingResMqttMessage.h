@@ -15,10 +15,10 @@ public:
     PingResMqttMessage():MqttMessage(PINGRESP,RESERVERTO0){
 
     }
-    String buildMqttPacket(){
-        String pingRespPacket;
-        pingRespPacket.concat((char)getTypeAndFlags());
-        pingRespPacket.concat((char)0);
+    std::string buildMqttPacket(){
+        std::string pingRespPacket;
+        pingRespPacket.append(1,(char)getTypeAndFlags());
+        pingRespPacket.append(1,(char)0);
         return pingRespPacket;        
     }
 };

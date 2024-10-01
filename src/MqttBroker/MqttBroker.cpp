@@ -1,4 +1,14 @@
 #include "MqttBroker.h"
+#ifdef ARDUINO
+void print_log(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    Serial.vprintf(format, args);
+    va_end(args);
+    Serial.println();  // This adds the newline
+}
+#endif 
+
 using namespace mqttBrokerName;
 MqttBroker::~MqttBroker(){
     

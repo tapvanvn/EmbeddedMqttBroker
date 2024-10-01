@@ -14,18 +14,18 @@
 class ConnectMqttMessage: public MqttMessage{
     private:
         
-        String protocolName;
+        std::string protocolName;
         uint8_t version;
         uint8_t connectFlags;
         uint16_t keepAlive;
-        String clientID;
+        std::string clientID;
 
         /**
          * @brief To implement in next versions.
          * 
          */
-        String userName;
-        String pass;
+        std::string userName;
+        std::string pass;
 
     public:
 
@@ -41,7 +41,7 @@ class ConnectMqttMessage: public MqttMessage{
         return keepAlive;
     }
 
-    String getClientId(){
+    std::string getClientId(){
         return clientID;
     }
 

@@ -28,7 +28,7 @@ MqttClient::MqttClient(WiFiClient tcpConnection, QueueHandle_t * deleteMqttClien
 
 void MqttClient::publishMessage(PublishMqttMessage* publishMessage){
   log_v("Topic %s send to %i", publishMessage->getTopic().getTopic().c_str(), this->clientId);
-  log_v("\n%s", publishMessage->getTopic().getPayLoad().c_str());
+  //log_v("\n%s", publishMessage->getTopic().getPayLoad().c_str());
   /*
   for qos > 0
   uint8_t publishFlasgs = 0x6 & topics[i].getQos();
@@ -78,14 +78,14 @@ void MqttClient::notifyPublishRecived(PublishMqttMessage *publishMessage){
 }
 
 
-void MqttClient::sendPacketByTcpConnection(String mqttPacket){
+void MqttClient::sendPacketByTcpConnection(std::string mqttPacket){
   
   tcpConnection.write(mqttPacket.c_str(),mqttPacket.length()); // ok!!
 
 }
 
 void MqttClient::sendPingRes(){
-  String resPacket = messagesFactory.getPingResMessage().buildMqttPacket();
+  std::string resPacket = messagesFactory.getPingResMessage().buildMqttPacket();
   log_v("sending ping response to %i.", this->clientId);
   sendPacketByTcpConnection(resPacket);
 }

@@ -1,22 +1,23 @@
 #ifndef MQTTTOPIC_H
 #define MQTTTOPIC_H
 
+#include <string>
 class MqttTocpic
 {
 private:
-    String topic;
+    std::string topic;
     uint8_t qos;
-    String payLoad;
+    std::string payLoad;
 
 public:
     MqttTocpic(){}
-    MqttTocpic(String topic, String payLoad, uint8_t qos = 0){
+    MqttTocpic(std::string topic, std::string payLoad, uint8_t qos = 0){
         this->topic = topic;
         this->payLoad = payLoad;
         this->qos = qos;
     }
 
-    String getTopic(){
+    std::string getTopic(){
         return topic;
     }
 
@@ -24,15 +25,15 @@ public:
         return topic.length();
     }
 
-    String getPayLoad(){
+    std::string getPayLoad(){
         return payLoad;
     }
 
-    void setTopic(String topic){
+    void setTopic(std::string topic){
         this->topic = topic;
     }
 
-    void setPayLoad(String payLoad){
+    void setPayLoad(std::string payLoad){
         this->payLoad = payLoad;
     }
 
@@ -44,7 +45,7 @@ public:
     }
 
     bool isTopic(MqttTocpic topic){
-        return this->topic.equals(topic.getTopic());
+        return this->topic.compare(topic.getTopic()) == 0;
     }
 
     /**
@@ -59,10 +60,10 @@ public:
         return length;
     }
 
-    String getTopicAndPayLoad(){
-        String topicAndPayload;
-        topicAndPayload.concat(topic);
-        topicAndPayload.concat(payLoad);
+    std::string getTopicAndPayLoad(){
+        std::string topicAndPayload;
+        topicAndPayload.append(topic);
+        topicAndPayload.append(payLoad);
         return topicAndPayload;
     }
 };

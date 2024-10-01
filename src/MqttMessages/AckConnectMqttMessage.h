@@ -44,7 +44,7 @@ public:
      */
     AckConnectMqttMessage(uint8_t ackFlags, uint8_t connectReturnCode);
     
-    String buildMqttPacket();
+    std::string buildMqttPacket();
 };
 
 
